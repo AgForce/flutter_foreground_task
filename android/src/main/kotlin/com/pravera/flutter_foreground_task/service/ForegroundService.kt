@@ -76,32 +76,34 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		super.onCreate()
 		fetchDataFromPreferences()
 		registerBroadcastReceiver()
+		Log.i(TAG, "mar_onCreate")
+		Log.i(TAG, foregroundServiceStatus.action)
+		startForegroundService()
+		executeDartCallback(foregroundTaskOptions.callbackHandle)
 
-		when (foregroundServiceStatus.action) {
-			ForegroundServiceAction.START -> {
-				startForegroundService()
-				executeDartCallback(foregroundTaskOptions.callbackHandle)
-			}
-			ForegroundServiceAction.REBOOT -> {
-				startForegroundService()
-				executeDartCallback(foregroundTaskOptions.callbackHandleOnBoot)
-			}
-		}
+//		when (foregroundServiceStatus.action) {
+//			ForegroundServiceAction.START -> {
+//			}
+//			ForegroundServiceAction.REBOOT -> {
+//				startForegroundService()
+//				executeDartCallback(foregroundTaskOptions.callbackHandleOnBoot)
+//			}
+//		}
 	}
 
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 		super.onStartCommand(intent, flags, startId)
 		fetchDataFromPreferences()
-
+		Log.i(TAG, "mar_onStartCommand")
 		when (foregroundServiceStatus.action) {
 			ForegroundServiceAction.UPDATE -> {
 				startForegroundService()
-				executeDartCallback(foregroundTaskOptions.callbackHandle)
+//				executeDartCallback(foregroundTaskOptions.callbackHandle)
 			}
-			ForegroundServiceAction.RESTART -> {
-				startForegroundService()
-				executeDartCallback(foregroundTaskOptions.callbackHandleOnBoot)
-			}
+//			ForegroundServiceAction.RESTART -> {
+//				startForegroundService()
+//				executeDartCallback(foregroundTaskOptions.callbackHandleOnBoot)
+//			}
 			ForegroundServiceAction.STOP -> {
 				stopForegroundService()
 				return START_NOT_STICKY

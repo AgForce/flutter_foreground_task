@@ -1,6 +1,8 @@
 package com.pravera.flutter_foreground_task.models
 
 import android.content.Context
+import android.util.Log
+import com.pravera.flutter_foreground_task.service.ForegroundService
 import com.pravera.flutter_foreground_task.PreferencesKey as PrefsKey
 
 data class ForegroundTaskOptions(
@@ -13,9 +15,12 @@ data class ForegroundTaskOptions(
     val callbackHandleOnBoot: Long?
 ) {
     companion object {
+        private val TAG = ForegroundService::class.java.simpleName
+
         fun getData(context: Context): ForegroundTaskOptions {
             val prefs = context.getSharedPreferences(
                 PrefsKey.FOREGROUND_TASK_OPTIONS_PREFS_NAME, Context.MODE_PRIVATE)
+            Log.i(TAG, "mar_getData ${prefs.getLong(PrefsKey.CALLBACK_HANDLE, 0L)}")
 
             val interval = prefs.getLong(PrefsKey.TASK_INTERVAL, 5000L)
             val isOnceEvent = prefs.getBoolean(PrefsKey.IS_ONCE_EVENT, false)
@@ -45,6 +50,7 @@ data class ForegroundTaskOptions(
         }
 
         fun putData(context: Context, map: Map<*, *>?) {
+            Log.i(TAG, "mar_putData")
             val prefs = context.getSharedPreferences(
                 PrefsKey.FOREGROUND_TASK_OPTIONS_PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -72,6 +78,7 @@ data class ForegroundTaskOptions(
         }
 
         fun updateCallbackHandle(context: Context, map: Map<*, *>?) {
+            Log.i(TAG, "mar_updateCallbackHandle")
             val prefs = context.getSharedPreferences(
                 PrefsKey.FOREGROUND_TASK_OPTIONS_PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -88,6 +95,7 @@ data class ForegroundTaskOptions(
         }
 
         fun clearData(context: Context) {
+            Log.i(TAG, "mar_clearData")
             val prefs = context.getSharedPreferences(
                 PrefsKey.FOREGROUND_TASK_OPTIONS_PREFS_NAME, Context.MODE_PRIVATE)
 
